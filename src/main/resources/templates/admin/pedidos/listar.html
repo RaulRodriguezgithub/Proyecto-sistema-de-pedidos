@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/head :: head}"></head>
+
+<body>
+    <div th:replace="~{fragments/sidebar :: sidebar}"></div>
+
+    <!-- Contenedor principal alineado con el sidebar -->
+    <div class="content-wrapper main-content d-flex flex-column">
+        <nav class="navbar bg-dark px-3" data-bs-theme="dark"
+             style="position: fixed; top: 0; left: 250px; right: 0; z-index: 1030; height: 50px;">
+            <div class="d-flex justify-content-center align-items-center w-100" style="height: 100%;">
+                <form class="d-flex align-items-center" role="search" th:action="@{/admin/pedidos/listar}" method="get">
+                    <input type="text" min="1" name="keyword" class="form-control me-2" placeholder="Buscar pedido..."
+                           th:value="${param.keyword}" style="width: 250px;" />
+                    <button type="submit" class="btn btn-outline-light btn-sm me-2">Buscar Pedido</button>
+                </form>
+            </div>
+        </nav>
+
+        <main class="flex-fill pt-5 px-4">
+            <h2 class="titulos">Listado de Pedidos</h2>
+
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>Id</th>
+                        <th>Fecha del Pedido</th>
+                        <th>Nombres del Cliente</th>
+                        <th>Dirección del Cliente</th>
+                        <th>Teléfono del Cliente</th>
+                        <th>Estado del Pedido</th>
+                        <th>Total Pedido</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="pedido : ${pedidos}">
+                        <td th:text="${pedido.id}"></td>
+                        <td th:text="${pedido.fecha}"></td>
+                        <td th:text="${pedido.cliente.nombre}"></td>
+                        <td th:text="${pedido.cliente.direccion}"></td>
+                        <td th:text="${pedido.cliente.telefono}"></td>
+                        <td>
+							<form th:action="@{/admin/pedidos/{id}/estado(id=${pedido.id})}" method="post">
+                                <select name="estado" class="form-select form-select-sm" onchange="this.form.submit()">
+                                    <option th:value="'Pendiente'" th:selected="${pedido.estado} == 'Pendiente'">Pendiente</option>
+                                    <option th:value="'Enviado'" th:selected="${pedido.estado} == 'Enviado'">Enviado</option>
+                                    <option th:value="'Cancelado'" th:selected="${pedido.estado} == 'Cancelado'">Cancelado</option>
+                                </select>
+                            </form>
+                        </td>
+                        <td th:text="${pedido.total}"></td>
+                        <td class="table-icons">
+                            <a th:href="@{/admin/pedidos/detalles/}+${pedido.id}" class="btn btn-outline-warning btn-sm me-2">
+                                <i class="fa fa-eye" aria-hidden="true"></i>
+                            </a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </main>
+    </div>
+
+	<div th:replace="~{fragments/footer :: footer}"></div>
+	</body>
+	</html>

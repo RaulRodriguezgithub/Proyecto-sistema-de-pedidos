@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+	<head th:replace="~{fragments/head :: head}"></head>
+
+<body>
+	<div th:replace="~{fragments/sidebar :: sidebar}"></div>
+    <div class="content-wrapper d-flex justify-content-start align-items-start pt-5"
+         style="margin-left: 90px; min-height: 100vh; padding-left: 40px;">
+
+        <div class="container">
+
+            <!-- Barra de búsqueda fija -->
+            <nav class="navbar bg-dark px-3" data-bs-theme="dark"
+                 style="position: fixed; top: 0; left: 280px; right: 0; z-index: 1030; height: 50px;">
+                <div class="d-flex justify-content-center align-items-center w-100" style="height: 100%;">
+                    <form class="d-flex align-items-center" role="search"
+                          th:action="@{/admin/tienda/productos}" method="get">
+                        <input type="text" name="keyword" class="form-control me-2"
+                               placeholder="Buscar producto..."
+                               th:value="${param.keyword}" style="width: 250px;" />
+                        <button type="submit" class="btn btn-outline-light btn-sm me-2">Buscar</button>
+                    </form>
+                </div>
+            </nav>
+
+            <!-- Listado de productos -->
+            <main class="flex-fill">
+                <h2 class="titulos">Productos Disponibles</h2>
+                <div class="card-container">
+                    <div class="card" th:each="prod : ${productos}">
+                        <div class="card-img">
+                            <img th:src="@{${prod.imagenUrl}}" th:alt="${prod.nombreProducto}">
+                        </div>
+                        <div class="card-info">
+                            <p class="text-title" th:text="${prod.nombreProducto}"></p>
+                            <p class="text-body" th:text="${prod.descripcion}"></p>
+                        </div>
+                        <div class="card-footer">
+                            <span class="card-title" th:text="'$' + ${prod.precio}"></span>
+                            <div class="card-button">
+                                <form th:action="@{/admin/tienda/agregar}" method="post">
+                                    <input type="hidden" name="productoId" th:value="${prod.id}">
+                                    <button type="submit" class="btn btn-outline-primary" onclick="agregarProducto()">
+                                        <i class="fa fa-cart-arrow-down" aria-hidden="true"></i>
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </main>
+
+        </div>
+    </div>
+
+    <script>
+        function agregarProducto() {
+            Swal.fire({
+              position: "top-end",
+              icon: "success",
+              text: "Producto Agregado al carrito",
+              showConfirmButton: false,
+              timer: 1000,
+              toast: true
+            });
+        }
+    </script>
+
+	<div th:replace="~{fragments/footer :: footer}"></div>
+	</body>
+	</html>

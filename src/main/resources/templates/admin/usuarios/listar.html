@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/head :: head}"></head>
+
+<body>
+    <!-- Sidebar -->
+    <div th:replace="~{fragments/sidebar :: sidebar}"></div>
+
+<!-- Contenedor principal alineado al sidebar -->
+<div class="main-content d-flex flex-column px-4" style="margin-left: 280px; min-height: 100vh; padding-top: 70px;">
+    <!-- Barra de navegación fija -->
+    <nav class="navbar bg-dark px-3" data-bs-theme="dark"
+         style="position: fixed; top: 0; left: 280px; right: 0; z-index: 1030; height: 50px;">
+        <div class="d-flex justify-content-center align-items-center w-100" style="height: 100%;">
+            <form class="d-flex align-items-center" role="search" th:action="@{/admin/usuarios/listar}" method="get">
+                <input type="text" name="keyword" class="form-control me-2" placeholder="Buscar usuario..."
+                       th:value="${param.keyword}" style="width: 250px;" />
+                <button type="submit" class="btn btn-outline-light btn-sm me-2">Buscar</button>
+                <a th:href="@{/admin/usuarios/insertar}" class="btn btn-outline-light btn-sm">Nuevo Usuario</a>
+            </form>
+        </div>
+    </nav>
+
+    <!-- Contenido principal -->
+    <div class="container">
+        <main>
+            <div class="usuarios">
+                <h2 class="titulos">Listado de Usuarios</h2>
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>Id</th>
+                            <th>Nombres</th>
+                            <th>Nombre de Usuario</th>
+                            <th>Rol</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="u : ${usuario}">
+                            <td th:text="${u.id}"></td>
+                            <td th:text="${u.nombres}"></td>
+                            <td th:text="${u.username}"></td>
+                            <td th:text="${u.rol}"></td>
+                            <td class="table-icons">
+                                <a th:href="@{/admin/usuarios/eliminar/{id}(id=${u.id})}" class="btn btn-outline-danger btn-sm">
+                                    <i class="fa fa-trash" aria-hidden="true"></i>
+                                </a>
+                                
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </main>
+    </div>
+</div>
+
+<div th:replace="~{fragments/footer :: footer}"></div>
+</body>
+</html>

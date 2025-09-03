@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/head :: head}"></head>
+
+<body>
+    <div th:replace="~{fragments/sidebar :: sidebar}"></div>
+
+    <!-- Contenedor principal alineado con el sidebar -->
+    <div class="content-wrapper main-content d-flex flex-column pt-4">
+        <div class="container">
+            <main>
+                <h2 class="titulos">Datos de Envío</h2>
+                <div class="row justify-content-center">
+                    <div class="col-md-8">
+
+                        <form th:action="@{/admin/tienda/confirmar}" th:object="${cliente}"
+                              method="post" enctype="multipart/form-data"
+                              class="needs-validation formularioCliente" novalidate>
+                            <div class="row g-3">
+
+                                <div class="col-12">
+                                    <label for="nombre" class="form-label text-black">Nombre Completo:</label>
+                                    <input type="text" class="form-control" th:field="*{nombre}" id="nombreCliente"
+                                           placeholder="Nombre del Cliente" required>
+                                    <div class="invalid-feedback">
+                                        Ingrese el nombre del Cliente.
+                                    </div>
+                                </div>
+
+                                <div class="col-12">
+                                    <label for="correo" class="form-label">Correo Electrónico:</label>
+                                    <input type="email" class="form-control" th:field="*{correo}" id="correo"
+                                           placeholder="correo" required>
+                                    <div class="invalid-feedback">
+                                        Ingrese el correo electrónico del Cliente.
+                                    </div>
+                                </div>
+
+                                <div class="col-12">
+                                    <label for="direccion" class="form-label">Dirección de Envío:</label>
+                                    <input type="text" class="form-control" th:field="*{direccion}" id="direccion"
+                                           placeholder="direccion" required>
+                                    <div class="invalid-feedback">
+                                        Ingrese la dirección de envío.
+                                    </div>
+                                </div>
+
+                                <div class="col-12">
+                                    <label for="telefono" class="form-label">Teléfono del Cliente:</label>
+                                    <input type="number" class="form-control" th:field="*{telefono}" id="telefono"
+                                           placeholder="telefono" required>
+                                    <div class="invalid-feedback">
+                                        Ingrese el número telefónico del Cliente.
+                                    </div>
+                                </div>
+
+                                <button class="w-100 btn btn-dark btn-lg" type="submit">Guardar Pedido</button>
+                            </div>
+                        </form>
+
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <script>
+        (() => {
+            'use strict';
+            const forms = document.querySelectorAll('.needs-validation');
+            Array.from(forms).forEach(form => {
+                form.addEventListener('submit', event => {
+                    if (!form.checkValidity()) {
+                        event.preventDefault();
+                        event.stopPropagation();
+                    }
+                    form.classList.add('was-validated');
+                }, false);
+            });
+        })();
+    </script>
+
+    <div th:replace="~{fragments/footer :: footer}"></div>
+</body>
+</html>

@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+	<head th:replace="~{fragments/head :: head}"></head>
+
+<body>
+	<div th:replace="~{fragments/sidebar :: sidebar}"></div>
+		<div class="content-wrapper" style="margin-left: 280px; height: 100vh; overflow: hidden;">
+	    <div class="container d-flex justify-content-center align-items-center" style="height: 100%;">
+		<div class="container">
+			<main class="w-100">
+				<h2 class="titulos">Actualizacion de Productos</h2>
+				<div class="row justify-content-center">
+					<div class="col-md-7 col-lg-6">
+						<form th:action="@{/admin/productos/guardar}" th:object="${producto}" method="post"
+							enctype="multipart/form-data" class="needs-validation formularioCliente" novalidate>
+							<div class="row gy-2">
+								<!-- Campos del formulario -->
+								<div class="col-12">
+									<input type="hidden" th:field="*{id}">
+									<label for="nombreProducto" class="form-label text-black">Nombre del Producto:</label>
+									<input type="text" class="form-control" th:field="*{nombreProducto}" id="nombreProducto"
+										placeholder="Nombre del Producto" required>
+								</div>
+	
+								<div class="col-12">
+									<label for="descripcion" class="form-label">Descripcion:</label>
+									<input type="text" class="form-control" th:field="*{descripcion}" id="descripcion"
+										placeholder="Descripcion" required>
+								</div>
+	
+								<div class="col-12">
+									<label for="stock" class="form-label">Cantidad:</label>
+									<input type="number" class="form-control" th:field="*{stock}" id="stock" min="1" required>
+								</div>
+	
+								<div class="col-12">
+									<label for="valor" class="form-label">Valor del Producto:</label>
+									<input type="number" class="form-control" th:field="*{precio}" id="precio" min="1" required>
+								</div>
+	
+								<div class="col-12">
+									<label for="imagen" class="form-label">Ingrese la imagen del Producto:</label>
+									<input type="file" class="form-control" name="imagen" id="imagen" required>
+								</div>
+	
+								<div class="col-12">
+									<button class="btn btn-dark w-100" type="submit">Actualizar Producto</button>
+								</div>
+							</div>
+						</form>
+					</div>
+				</div>
+			</main>
+		</div>
+	</div>
+
+
+<script>
+	(() => {
+		'use strict'
+
+		// Fetch all the forms we want to apply custom Bootstrap validation styles to
+		const forms = document.querySelectorAll('.needs-validation')
+
+		// Loop over them and prevent submission
+		Array.from(forms).forEach(form => {
+			form.addEventListener('submit', event => {
+				if (!form.checkValidity()) {
+					event.preventDefault()
+					event.stopPropagation()
+				}
+
+				form.classList.add('was-validated')
+			}, false)
+		})
+	})()
+</script>
+<div th:replace="~{fragments/footer :: footer}"></div>
+</body>
+</html>

@@ -1,0 +1,70 @@
+<th:block th:fragment="contenido">
+	<!DOCTYPE html>
+	<html xmlns:th="http://www.thymeleaf.org">
+		<head th:replace="~{fragments/head :: head}"></head>
+	
+	<body>
+		<div th:replace="~{fragments/sidebar :: sidebar}"></div>
+	    <!-- Contenido principal alineado con el sidebar -->
+	    <div class="content-wrapper d-flex flex-column pt-5" style="margin-left: 280px; min-height: 100vh;">
+			<nav class="navbar bg-dark px-3" data-bs-theme="dark"
+			                style="position: fixed; top: 0; left: 280px; right: 0; z-index: 1030; height: 50px;">
+			               <div class="d-flex justify-content-center align-items-center w-100" style="height: 100%;">
+			                   <form class="d-flex align-items-center" role="search"
+			                         th:action="@{/admin/tienda/productos}" method="get">
+			                       <input type="text" name="keyword" class="form-control me-2"
+			                              placeholder="Buscar producto..."
+			                              th:value="${param.keyword}" style="width: 250px;" />
+			                       <button type="submit" class="btn btn-outline-light btn-sm me-2">Buscar</button>
+			                   </form>
+			               </div>
+			           </nav>
+	        <div class="container">
+    
+        <h2 class="titulos">Carrito de Compras</h2>
+
+        <div th:if="${#lists.isEmpty(carrito)}" class="alert alert-info text-center">
+            No hay productos en el carrito.
+        </div>
+
+        <div th:unless="${#lists.isEmpty(carrito)}">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>Nombre Producto</th>
+                        <th>Cantidad</th>
+                        <th>Precio Unitario</th>
+                        <th>Subtotal</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="item : ${carrito}">
+                        <td th:text="${item.producto.nombreProducto}"></td>
+                        <td th:text="${item.cantidad}"></td>
+                        <td th:text="${item.producto.precio}"></td>
+                        <td th:text="${item.subtotal}"></td>
+                        <td>
+                            <a th:href="@{/admin/tienda/remover/{id}(id=${item.producto.id})}"
+                               class="btn btn-outline-danger btn-sm">
+                                <i class="fa fa-trash" aria-hidden="true"></i>
+                            </a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th></th>
+                        <th></th>
+                        <th>Total Compra:</th>
+                        <td class="total" th:text="${total}"></td>
+                        <th></th>
+                    </tr>
+                </tbody>
+            </table>
+
+            <a th:href="@{/admin/tienda/compra}" class="w-100 btn btn-dark">Confirmar Productos</a>
+        </div>
+    </div>
+
+	<div th:replace="~{fragments/footer :: footer}"></div>
+	</body>
+	</html>

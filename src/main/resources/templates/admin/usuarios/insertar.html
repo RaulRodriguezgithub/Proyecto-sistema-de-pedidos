@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/head :: head}"></head>
+
+<body>
+    
+    <div th:replace="~{fragments/sidebar :: sidebar}"></div>
+
+    <!-- Contenido principal -->
+    <div class="main-content d-flex flex-column pt-4 px-4" style="min-height: 100vh; margin-left: 280px;">
+        <main>
+            <h2 class="titulos">Registro de Usuario</h2>
+            <div class="row justify-content-center">
+                <div class="col-md-8">
+
+                    <form th:action="@{/admin/usuarios/guardar}" th:object="${usuario}" method="post"
+                          enctype="multipart/form-data" class="needs-validation formularioCliente" novalidate>
+                        
+
+                        <div class="row g-3">
+                            <div class="col-12">
+                                <label for="nombres" class="form-label text-black">Nombres:</label>
+                                <input type="text" class="form-control" th:field="*{nombres}" id="nombres"
+                                       placeholder="Nombres" required>
+                                <div class="invalid-feedback">Ingrese el nombre.</div>
+                            </div>
+
+                            <div class="col-12">
+                                <label for="userName" class="form-label">Nombre de Usuario:</label>
+                                <input type="text" class="form-control" th:field="*{username}" id="userName"
+                                       placeholder="Username" required>
+                                <div class="invalid-feedback">Ingrese el nombre de usuario.</div>
+                            </div>
+
+                            <div class="col-12">
+                                <label for="password" class="form-label">Contraseña:</label>
+                                <div class="input-group">
+                                    <input type="password" class="form-control" th:field="*{password}" id="password"
+                                           placeholder="Contraseña" minlength="8" required>
+                                    <span class="input-group-text" onclick="togglePassword()" style="cursor: pointer;">
+                                        <i class="fa fa-eye" id="toggleicon"></i>
+                                    </span>
+                                    <div class="invalid-feedback">La contraseña debe tener al menos 8 caracteres.</div>
+                                </div>
+                            </div>
+
+                            <div class="col-12">
+                                <button class="w-100 btn btn-dark btn-lg" type="submit">Registrar Usuario</button>
+                            </div>
+                        </div>
+                    </form>
+
+                </div>
+            </div>
+        </main>
+    </div>
+
+    
+    <script>
+        (() => {
+            'use strict'
+            const forms = document.querySelectorAll('.needs-validation')
+            Array.from(forms).forEach(form => {
+                form.addEventListener('submit', event => {
+                    if (!form.checkValidity()) {
+                        event.preventDefault()
+                        event.stopPropagation()
+                    }
+                    form.classList.add('was-validated')
+                }, false)
+            })
+        })()
+
+        function togglePassword() {
+            const input = document.getElementById("password");
+            const icon = document.getElementById("toggleicon");
+
+            if (input.type === "password") {
+                input.type = "text";
+                icon.classList.remove("fa-eye");
+                icon.classList.add("fa-eye-slash");
+            } else {
+                input.type = "password";
+                icon.classList.remove("fa-eye-slash");
+                icon.classList.add("fa-eye");
+            }
+        }
+    </script>
+	<div th:replace="~{fragments/footer :: footer}"></div>
+</body>
+</html>

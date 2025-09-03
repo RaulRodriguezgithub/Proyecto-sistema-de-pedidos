@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/head :: head}"></head>
+
+<body>
+    <div th:replace="~{fragments/sidebar :: sidebar}"></div>
+
+    <div class="content-wrapper main-content d-flex flex-column pt-5 px-4">
+        <h2 class="titulos">
+            Detalles del Pedido #<span th:text="${pedido.id}"></span>
+        </h2>
+
+        <table class="table table-bordered">
+            <thead class="table-dark">
+                <tr>
+                    <th>Nombre del Cliente</th>
+                    <th>Fecha del Pedido</th>
+                    <th>Hora del Pedido</th>
+                    <th>Estado</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td th:text="${pedido.cliente.nombre}"></td>
+                    <td th:text="${#dates.format(pedido.fecha, 'dd/MM/yyyy')}"></td>
+                    <td th:text="${#dates.format(pedido.fecha, 'HH:mm:ss')}"></td>
+                    <td th:text="${pedido.estado}"></td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h3 class="titulos">Productos</h3>
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th>Producto</th>
+                    <th>Cantidad</th>
+                    <th>Precio Unitario</th>
+                    <th>Subtotal</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="detalle : ${pedidoDetalle}">
+                    <td th:text="${detalle.productos.nombreProducto}"></td>
+                    <td th:text="${detalle.cantidad}"></td>
+                    <td th:text="${detalle.productos.precio}"></td>
+                    <td th:text="${detalle.subtotal}"></td>
+                </tr>
+                <tr>
+                    <th></th>
+                    <th></th>
+                    <th>Total Pedido:</th>
+                    <td class="total" th:text="${pedido.total}"></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+	<div th:replace="~{fragments/footer :: footer}"></div>
+</body>
+</html>

@@ -1,0 +1,75 @@
+<th:block th:fragment="sidebar">
+    <div class="d-flex flex-column flex-shrink-0 p-3 text-bg-dark"
+         style="width: 280px; height: 100vh; position: fixed; top: 0; left: 0;">
+
+        <!-- Título del proyecto -->
+        <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-white text-decoration-none">
+            <span class="fs-4">Proyecto</span>
+        </a>
+
+        <hr>
+
+        <!-- Menú principal -->
+        <ul class="nav nav-pills flex-column mb-auto">
+			<li class="nav-item">
+			    <a th:href="@{/admin/usuarios/insertar}" class="nav-link text-white">
+			        <i class="fa fa-user-plus" aria-hidden="true"></i> Registrar Usuario
+			    </a>
+			</li>
+            <li>
+                <a th:href="@{/admin/usuarios/listar}" class="nav-link text-white">
+                    <i class="fa fa-users" aria-hidden="true"></i> Usuarios
+                </a>
+            </li>
+            <hr>
+            <li>
+                <a th:href="@{/admin/productos/listar}" class="nav-link text-white">
+                    <i class="fa fa-cubes" aria-hidden="true"></i> Productos
+                </a>
+            </li>
+            <li>
+                <a th:href="@{/admin/tienda/productos}" class="nav-link text-white">
+                    <i class="fa fa-shopping-bag" aria-hidden="true"></i> Tienda
+                </a>
+            </li>
+            <li>
+                <a th:href="@{/admin/tienda/carrito}" class="nav-link text-white">
+                    <i class="fa fa-shopping-basket" aria-hidden="true"></i> Carrito
+                    <span th:text="${cantidadCarrito}" class="badge bg-info" th:if="${cantidadCarrito > 0}"></span>
+                </a>
+            </li>
+            <hr>
+            <li>
+                <a th:href="@{/admin/pedidos/listar}" class="nav-link text-white">
+                    <i class="fa fa-clipboard" aria-hidden="true"></i> Pedidos
+                </a>
+            </li>
+            <li>
+                <a th:href="@{/admin/pedidos/enviados}" class="nav-link text-white">
+                    <i class="fa fa-truck" aria-hidden="true"></i> Pedidos Enviados
+                </a>
+            </li>
+        </ul>
+
+        <hr>
+
+        <!-- Usuario logueado -->
+        <div class="dropdown mt-auto">
+            <a class="d-flex align-items-center text-white text-decoration-none dropdown-toggle"
+               href="#" id="userMenu" data-bs-toggle="dropdown" aria-expanded="false">
+                <i class="fa fa-user-circle me-2" aria-hidden="true"></i>
+                <strong th:text="${usuarioLogueado}">Usuario</strong>
+            </a>
+            <ul class="dropdown-menu dropdown-menu-dark text-small shadow" aria-labelledby="userMenu">
+                <li>
+                    <form th:action="@{/logout}" method="post" style="display: inline;">
+                        <button type="submit" class="dropdown-item" style="width: 100%; text-align: left;">
+							<i class="fa fa-sign-out" aria-hidden="true"></i>   Cerrar sesión
+                        </button>
+                    </form>
+                </li>
+            </ul>
+        </div>
+
+    </div>
+</th:block>

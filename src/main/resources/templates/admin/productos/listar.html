@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+	<head th:replace="~{fragments/head :: head}"></head>
+
+<body>
+	<div th:replace="~{fragments/sidebar :: sidebar}"></div>
+    <!-- Contenido principal alineado con el sidebar -->
+    <div class="content-wrapper d-flex flex-column pt-5" style="margin-left: 280px; min-height: 100vh;">
+        <div class="container">
+
+            <!-- Navbar superior fija -->
+            <nav class="navbar bg-dark px-3" data-bs-theme="dark"
+                style="position: fixed; top: 0; left: 280px; right: 0; z-index: 1030; height: 50px;">
+                <div class="d-flex justify-content-center align-items-center w-100" style="height: 100%;">
+                    <form class="d-flex align-items-center" role="search" th:action="@{/admin/productos/listar}" method="get">
+                        <input type="text" name="keyword" class="form-control me-2" placeholder="Buscar producto..."
+                            th:value="${param.keyword}" style="width: 250px;" />
+                        <button type="submit" class="btn btn-outline-light btn-sm me-2">Buscar</button>
+                        <a th:href="@{/admin/productos/insertar}" class="btn btn-outline-light btn-sm">Nuevo Producto</a>
+                    </form>
+                </div>
+            </nav>
+
+            <!-- Contenido principal -->
+            <main class="flex-fill mt-5">
+                <h2 class="titulos">Listado de Productos</h2>
+
+                <!-- Tabla con scroll horizontal si es necesario -->
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>Id</th>
+                                <th>Nombre del Producto</th>
+                                <th>Descripcion</th>
+                                <th>Disponibles</th>
+                                <th>Precio</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr th:each="p : ${producto}">
+                                <td th:text="${p.id}"></td>
+                                <td th:text="${p.nombreProducto}"></td>
+                                <td th:text="${p.descripcion}"></td>
+                                <td th:text="${p.stock}"></td>
+                                <td th:text="${p.precio}"></td>
+                                <td class="table-icons">
+                                    <a th:href="@{/admin/productos/eliminar/{id}(id=${p.id})}"
+                                       class="btn btn-outline-danger btn-sm"
+                                       onclick="borrarProducto(event, this)">
+                                        <i class="fa fa-trash" aria-hidden="true"></i>
+                                    </a>
+                                    <a th:href="@{/admin/productos/actualizar/{id}(id=${p.id})}"
+                                       class="btn btn-outline-warning btn-sm">
+                                        <i class="fa fa-pencil" aria-hidden="true"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    
+    <script>
+        function borrarProducto(event, element) {
+            event.preventDefault();
+            const url = element.getAttribute("href");
+
+            Swal.fire({
+                title: "¿Está seguro?",
+                text: "No podrá revertir esta acción!",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#3085d6",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "Sí, borrar!"
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    Swal.fire("Borrado!", "El producto fue eliminado.", "success")
+                        .then(() => {
+                            window.location.href = url;
+                        });
+                }
+            });
+        }
+    </script>
+
+	<div th:replace="~{fragments/footer :: footer}"></div>
+</body>
+</html>
